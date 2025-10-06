@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TO DO LIST APP</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <header>
+      <h1>TO DO LIST APP</h1>
+    </header>
+    <section class="task">
+      <div class="task__header">
+        <h2 class="task__title">Danh sách công việc</h2>
+        <form class="task__form">
+          <div>
+            <input
+              type="text"
+              class="task__input"
+              placeholder="Nhập tên công việc"
+              aria-label="Tên công việc"
+            />
+            <p class="task__err-name"></p>
+          </div>
+
+          <button type="button" class="task__btn task__btn--add">
+            Thêm công việc
+          </button>
+        </form>
+      </div>
+
+      <ul class="task__list">
+        <!-- 
+        <li class="task__item" data-index="">
+          <input
+            type="checkbox"
+            class="task__checkbox"
+            aria-label="Đánh dấu hoàn thành công việc"
+          />
+          <span class="task__name">name task</span>
+          <div class="task__actions">
+            <button type="button" class="task__btn task__btn--edit">sửa</button>
+            <button type="button" class="task__btn task__btn--delete">
+              Xóa
+            </button>
+          </div>
+        </li>
+         -->
+      </ul>
+
+      <div class="task__footer">
+        <span class="task__count">
+          Đang chờ: <strong id="pending-count"></strong>
+          | Đã hoàn thành:
+          <strong id="done-count"></strong>
+        </span>
+      </div>
+    </section>
+
+    <div class="modal-edit-task">
+      <form class="edit-task__form">
+        <h2 class="edit-task__title">Chỉnh sửa công việc</h2>
+        <label for="name">Tên công việc</label>
+        <input
+          id="name"
+          type="text"
+          name="name"
+          class="edit-task__input"
+          aria-label="Tên công việc"
+        />
+        <div class="edit-task__actions">
+          <button
+            type="button"
+            class="edit-task__btn edit-task__btn--save"
+            disabled="true"
+          >
+            Lưu
+          </button>
+          <button type="button" class="edit-task__btn edit-task__btn--cancel">
+            Hủy
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <div class="popup-comfirm">
+      <div class="popup-comfirm__content">
+        <h3 class="popup-comfirm__title"></h3>
+        <p class="popup-comfirm__mess"></p>
+        <div class="popup-comfirm__actions">
+          <button class="popup-comfirm__btn popup-comfirm__btn--agree">
+            Xác nhận
+          </button>
+          <button class="popup-comfirm__btn popup-comfirm__btn--cancel">
+            Hủy
+          </button>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
