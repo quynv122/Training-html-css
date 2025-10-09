@@ -174,12 +174,23 @@ function genIdTask() {
   return id;
 }
 
+
+function isDuplicateTask(nameTask) {
+    let tasks = getTasks();
+        let dublicateTask = tasks.filter((task) => task.name === nameTask)
+        {
+
+        }
+}
+
 const forms = document.querySelectorAll("form");
 forms.forEach((form) => {
   form.addEventListener("submit", (e) => {
     e.preventDefault();
   });
 });
+
+
 
 const addTaskBtn = document.querySelector(".task__btn--add");
 addTaskBtn.addEventListener("click", () => {
@@ -231,3 +242,5 @@ taskInput.addEventListener("focus", (e) => {
     e.target.style.border = "2px solid rgba(0, 0, 0, 0.3)";
   });
 });
+
+
