@@ -1,7 +1,7 @@
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import MainLayout from "../layouts/MainLayout";
-import BoardPageContainer from './../pages/board/BoardPageContainer';
+import Board from '../components/board/Board';
 
 
 export default function RouterApp() {
@@ -9,7 +9,7 @@ export default function RouterApp() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<MainLayout />}>
-          <Route index element={<BoardPageContainer />} /> 
+          <Route index element={<Board/>} /> 
         </Route>
       </Routes>
     </BrowserRouter>

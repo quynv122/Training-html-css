@@ -1,76 +1,67 @@
-import { PencilLine, Trash2, Calendar, Flag } from "lucide-react";
-import { useContext } from "react";
-import { BoardContext } from "../../contexts/BoardContext";
-import ModalEditTask from "../ModalEditTask";
-import useModalEditTask from "../../hooks/useModalEditTask";
+import { PencilLine, Trash2, Clock } from "lucide-react";
 
 
-const TaskCard = ({ task, columnId, columnTitle }) => {
- 
+const TaskCard = ({ task, columnId, onDeleteTask, handleOpenModal }) => {
 
 
-  const { handleDeleteTask } = useContext(BoardContext);
-  const { isShowingModalEditTask, toggleModalEditTask } = useModalEditTask();
-  
-  const priorityConfig = {
-    High: {
-      bg: "bg-red-100",
-    },
-    Medium: {
-      bg: "bg-amber-100",
-    },
-    Low: {
-      bg: "bg-emerald-100",
-    },
+  const priorityColors = {
+    High: "bg-red-100 text-red-700 border-red-200",
+    Medium: "bg-yellow-100 text-yellow-700 border-yellow-200",
+    Low: "bg-green-100 text-green-700 border-green-200",
   };
 
-  const config = priorityConfig[task.priority] || priorityConfig.Low;
+  const formatDate = (dateStr) => {
+    const date = new Date(dateStr);
+    return date.toLocaleDateString("vi-VN", {
+      day: "2-digit",
+      month: "2-digit",
+    });
+  };
 
   return (
-   
-    <div className={ `group mb-4 ${config.bg} relative  border border-slate-300 dark:border-slate-800 rounded-lg p-3 transition-all duration-200 cursor-pointer`}>
-      <div className="flex justify-between items-start gap-2 mb-2">
-        <h3
-          className="font-semibold text-l text-black line-clamp-1 flex-1"
-          title={task.title}
-        >
-          {task.title}
-        </h3>
+    <>
+      <div className="bg-white p-4 rounded-lg shadow-sm border border-black hover:shadow-md transition-all  group">
+        <div className="flex items-start justify-between gap-2 mb-2">
+          <h4 className="font-medium text-gray-900 text-sm flex-1">
+            {task.title}
+          </h4>
+          <div>
+            
+            <button
+            onClick={() =>handleOpenModal(task)}
+            className="opacity-0 group-hover:opacity-100 text-gray-400 hover:text-red-500 transition-all">
+              <PencilLine size={14} />
+            </button>
+            <button
+              onClick={() => onDeleteTask(task.id, columnId)}
+              className="opacity-0 group-hover:opacity-100 text-gray-400 hover:text-red-500 transition-all"
+            >
+              <Trash2 size={14} />
+            </button>
+          </div>
+        </div>
 
-        <div className="absolute  right-3 bottom-2 z-999 opacity-0 flex gap-1  group-hover:opacity-100 transition-opacity duration-150">
-          <button
-            onClick={toggleModalEditTask}
-            className="rounded-md transition-colors mr-3"
-            title="Edit task"
+        {task.description && (
+          <p className="text-xs text-gray-600 mb-3 line-clamp-2">
+            {task.description}
+          </p>
+        )}
+
+        <div className="flex items-center justify-between">
+          <span
+            className={`text-xs px-2 py-1 rounded-full border ${
+              priorityColors[task.priority]
+            }`}
           >
-            <PencilLine
-              size={17}
-              className="text-black hover:text-blue-600"
-            />
-          </button>
-          <button
-            onClick={() => handleDeleteTask(task.id, columnId)}
-            className=" rounded-md transition-colors"
-            title="Delete task"
-          >
-            <Trash2 size={17} className="text-black hover:text-red-600" />
-          </button>
+            {task.priority}
+          </span>
+          <span className="text-xs text-gray-500 flex items-center gap-1">
+            <Clock size={12} />
+            {formatDate(task.createdAt)}
+          </span>
         </div>
       </div>
-
-      {task.description && (
-        <p className="text-xs text-black line-clamp-1 mb-3 leading-relaxed">
-          {task.description}
-        </p>
-      )}
-      <ModalEditTask
-        show={isShowingModalEditTask}
-        onClose={toggleModalEditTask}
-        task={task}
-        columnTitle = {columnTitle}
-      />
-    </div>
+    </>
   );
 };
-
 export default TaskCard;
