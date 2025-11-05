@@ -1,42 +1,97 @@
-import { GripVertical, Trash2 } from "lucide-react";
 import TaskCard from "../task-card/TaskCard";
+import { Ellipsis, Plus } from "lucide-react";
+import { useContext, useRef } from "react";
+import { BoardContext } from "../../contexts/boardContext";
 
-import AddTaskCard from "../task-card/AddTaskCard";
+import { CSS } from "@dnd-kit/utilities";
+import {
+  SortableContext,
+  useSortable,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
 
+const Column = ({ column, columnTasks }) => {
 
-const Column = ({ column, tasks, onDeleteColumn, onAddTask, onDeleteTask, handleOpenModal }) => {
+  const { openEditColumn, openAddTask } = useContext(BoardContext);
+
+  const btnEditColumn = useRef(null);
+  const btnAddTask = useRef(null);
+
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } =
+    useSortable({
+      id: column.id,
+      data: { ...column },
+    });
+
+  // custom styles cho column
+  const dndKitColumnStyles = {
+    transform: CSS.Translate.toString(transform),
+    transition,
+    height: "100%", 
+    opacity: isDragging ? 0.7: undefined
+  };
+
+  const onEditColumn = () => {
+    const rect = btnEditColumn.current.getBoundingClientRect();
+    openEditColumn(column, rect);
+  };
+
+  const onAddTask = () => {
+    const rect = btnAddTask.current.getBoundingClientRect();
+    openAddTask(column.id, rect);
+  };
 
   return (
-    <div className="bg-gray-50 dark:bg-black text-black dark:text-white border border-black dark:border-white
-
-     rounded-xl p-4 w-80 flex-shrink-0 h-fit">
-      <div className="flex items-center justify-between mb-4">
-        <div className="flex items-center gap-2">
-          <GripVertical size={18} className="text-gray-400 cursor-grab" />
-          <h3 className="font-semibold text-base">{column.title}</h3>
-          <span className="text-xs bg-gray-200 dark:bg-gray-800 px-2 py-0.5 rounded-full font-medium">
-            {tasks.length}
-          </span>
+    <div
+      ref={setNodeRef}
+      style={dndKitColumnStyles}
+      {...attributes}
+      className=" min-w-80 max-w-80 md:max-w-60"  
+    >
+      <div
+        {...listeners}
+        className=" bg-[rgb(163,233,204)] dark:bg-[rgba(19,51,59)] border border-black dark:border-white 
+        shadow-[0_5px_10px_rgba(0,0,0,0.35)] rounded-lg overflow-hidden"
+      >
+        <div className="flex items-center justify-between max-h-[4rem] h-[4rem] px-4 gap-4">
+          <h3 className="w-[90%] truncate text-lg text-black dark:text-white font-semibold">
+            {column.title}
+          </h3>
+          <button
+            ref={btnEditColumn}
+            onClick={onEditColumn}
+            className="text-black dark:text-white rounded hover:bg-[rgb(34,126,89)]"
+          >
+            <Ellipsis />
+          </button>
         </div>
-        <button
-          onClick={() => onDeleteColumn(column.id)}
-          className="text-gray-500 hover:text-red-500 transition-colors"
+
+        <SortableContext
+          items={columnTasks.map((task) => task.id)}
+          strategy={verticalListSortingStrategy}
         >
-          <Trash2 size={20} />
-        </button>
-      </div>
-      
-      <div className="space-y-3 max-h-[calc(100vh-220px)] overflow-y-auto pr-1 scrollbar-thin">
-        {tasks.map(task => (
-          <TaskCard
-            key={task.id}
-            task={task}
-            columnId = {column.id}
-            onDeleteTask={onDeleteTask}
-            handleOpenModal={handleOpenModal}
-          />
-        ))}
-        <AddTaskCard columnId= {column.id} onAddTask={onAddTask}/>
+          <div className="max-h-[calc(100vh-22rem)] overflow-y-auto overflow-x-hidden px-3 pb-3">
+            {columnTasks.map((task, index) => (
+              <TaskCard
+                key={task.id}
+                task={task}
+                columnId={column.id}
+                index={index}
+              />
+            ))}
+
+            <button
+              ref={btnAddTask}
+              onClick={onAddTask}
+              className="bg-[rgb(59,209,147)] dark:bg-[rgb(19,70,49)] dark:border-white dark:hover:bg-[rgb(2,119,72)] dark:text-white
+            hover:bg-[rgb(34,126,89)] rounded-lg p-2 w-full flex-shrink-0 transition-all
+               flex items-center justify-center gap-2 border border-black h-fit"
+            >
+              <Plus size={20} />
+              <span className="font-medium">Thêm thẻ mới</span>
+            </button>
+          </div>
+        </SortableContext>
       </div>
     </div>
   );

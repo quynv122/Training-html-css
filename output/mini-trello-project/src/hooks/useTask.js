@@ -1,24 +1,23 @@
-
 import { useCallback } from "react";
 
 export const useTask = (setBoardData) => {
+
+  // thêm task mới
   const addTask = useCallback(
     (newTask, columnId) => {
       setBoardData((prev) => {
-        
         if (!prev.columns[columnId]) return prev;
-
         return {
           ...prev,
           tasks: {
             ...prev.tasks,
-            [newTask.id]: newTask, 
+            [newTask.id]: newTask,
           },
           columns: {
             ...prev.columns,
             [columnId]: {
               ...prev.columns[columnId],
-              taskIds: [...prev.columns[columnId].taskIds, newTask.id], 
+              taskIds: [...prev.columns[columnId].taskIds, newTask.id],
             },
           },
         };
@@ -26,36 +25,29 @@ export const useTask = (setBoardData) => {
     },
     [setBoardData]
   );
-
+// cật nhật thông tin task
   const updateTask = useCallback(
     (newTask) => {
-  setBoardData((prev) => {
-
-    const newBoardData = {
-      ...prev,
-      tasks: {...prev.tasks,[newTask.id]:{...newTask}},
-    };
-
-    return newBoardData;
-  });
-},
+      setBoardData((prev) => {
+        const newBoardData = {
+          ...prev,
+          tasks: { ...prev.tasks, [newTask.id]: { ...newTask } },
+        };
+        return newBoardData;
+      });
+    },
     [setBoardData]
   );
 
 
+  // xóa task
   const deleteTask = useCallback(
     (taskId, columnId) => {
       setBoardData((prev) => {
         if (!prev.columns[columnId]) return prev;
-
-        const newTaskIds = prev.columns[columnId].taskIds.filter(
-          (id) => id !== taskId
-        );
-
-
+        const newTaskIds = prev.columns[columnId].taskIds.filter((id) => id !== taskId);
         const newTasks = { ...prev.tasks };
         delete newTasks[taskId];
-
         return {
           ...prev,
           tasks: newTasks,

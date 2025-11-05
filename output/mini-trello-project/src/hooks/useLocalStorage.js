@@ -4,10 +4,10 @@ export const useLocalStorage = (key, initialValue) => {
   const [boardData, setBoardData] = useState(() => {
     try {
       const item = window.localStorage.getItem(key);
-      return item ? JSON.parse(item) : initialValue;
+      return item ? JSON.parse(item) : initialValue || {};
     } catch (error) {
       console.error(error);
-      return initialValue;
+      return initialValue || {};
     }
   });
 

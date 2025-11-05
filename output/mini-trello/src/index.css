@@ -1,5 +1,0 @@
-/* Import reset trước */
-@import "./reset.css";
-
-/* Import Tailwind sau */
-@import "tailwindcss";

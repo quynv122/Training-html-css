@@ -1,22 +1,37 @@
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
 import { X } from "lucide-react";
 import { createPortal } from "react-dom";
+import { formatDate } from "../../utils/Date";
+import { useContext } from "react";
+import { BoardContext } from "../../contexts/boardContext";
 
-const EditTaskModal = ({ task, isOpen, onClose, onUpdateTask }) => {
+const ModalEditTask = ({ task, isOpen, onClose }) => {
+  const { handleUpdateTask } = useContext(BoardContext);
 
+  const [title, setTitle] = useState(task?.title || "");
+  const [description, setDescription] = useState(task?.description || "");
+  const [priority, setPriority] = useState(task?.priority || "Medium");
+  const [activeSubmit, setActiveSubmit] = useState(true);
 
-  const [title, setTitle] = useState(task?.title || '');
-  const [description, setDescription] = useState(task?.description|| '');
-  const [priority, setPriority] = useState(task?.priority|| 'Medium');
-
+  useEffect(() => {
+    const titleChanged = title.trim() && title.trim() !== task.title;
+    const descChanged = description.trim() !== task.description;
+    const priorityChanged = priority.trim() !== task.priority;
+    
+    if (titleChanged || descChanged || priorityChanged) {
+      setActiveSubmit(false);
+    } else {
+      setActiveSubmit(true);
+    }
+  }, [title, description, priority, task]);
 
   const handleSubmit = () => {
     if (title.trim()) {
-      onUpdateTask({
+      handleUpdateTask({
         ...task,
         title: title.trim(),
         description: description.trim(),
-        priority: priority,   
+        priority: priority,
       });
       onClose();
     }
@@ -26,16 +41,14 @@ const EditTaskModal = ({ task, isOpen, onClose, onUpdateTask }) => {
 
   return createPortal(
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
-      <div className="bg-white text-black border border-black 
+      <div
+        className="bg-white text-black border border-black 
       dark:bg-black dark:border-white dark:text-white
-      rounded-xl shadow-2xl w-full max-w-lg">
+      rounded-xl shadow-2xl w-full max-w-lg"
+      >
         <div className="flex items-center justify-between p-5 border-b">
-          <h3 className="text-lg font-semibold">
-            Chỉnh sửa Task
-          </h3>
-          <button
-            onClick={onClose}
-          >
+          <h3 className="text-lg font-semibold">Chỉnh sửa Task</h3>
+          <button onClick={onClose}>
             <X size={20} />
           </button>
         </div>
@@ -55,22 +68,18 @@ const EditTaskModal = ({ task, isOpen, onClose, onUpdateTask }) => {
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-2">
-              Mô tả
-            </label>
+            <label className="block text-sm font-medium mb-2">Mô tả</label>
             <textarea
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Nhập mô tả chi tiết..."
               rows="4"
-              className="w-full px-4 py-2 border border-black dark:border-none rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-yellow-500 focus:border-transparent resize-none"
+              className="w-full text-black px-4 py-2 border border-black dark:border-none rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-yellow-500 focus:border-transparent resize-none"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-2">
-              Độ ưu tiên
-            </label>
+            <label className="block text-sm font-medium mb-2">Độ ưu tiên</label>
             <div className="flex gap-2">
               {["Low", "Medium", "High"].map((p) => (
                 <button
@@ -91,6 +100,15 @@ const EditTaskModal = ({ task, isOpen, onClose, onUpdateTask }) => {
               ))}
             </div>
           </div>
+          <div>
+            <label className="block text-sm font-medium  mb-2">Ngày tạo</label>
+            <input
+              type="text"
+              readOnly
+              value={formatDate(task.createdAt)}
+              className="w-full px-4 py-2 border text-black border-black dark:border-none rounded-lg focus:outline-none "
+            />
+          </div>
         </div>
 
         <div className="flex gap-3 p-5 border-t border-gray-200">
@@ -101,8 +119,8 @@ const EditTaskModal = ({ task, isOpen, onClose, onUpdateTask }) => {
             Hủy
           </button>
           <button
+            disabled={activeSubmit}
             onClick={handleSubmit}
-            disabled={!title.trim()}
             className="flex-1 px-4 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
           >
             Lưu thay đổi
@@ -114,4 +132,4 @@ const EditTaskModal = ({ task, isOpen, onClose, onUpdateTask }) => {
   );
 };
 
-export default EditTaskModal;
+export default ModalEditTask;

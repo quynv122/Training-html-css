@@ -1,14 +1,15 @@
-import { ToastContainer } from "react-toastify";
+
 import RouterApp from "./routers/router";
+import CustomToast from "./utils/CustomToast";
 
 
 export default function App() {
+ 
+  
   return (
     <>
-      <ToastContainer />
-    
+       <CustomToast/>
         <RouterApp />
-     
     </>
   );
 }
