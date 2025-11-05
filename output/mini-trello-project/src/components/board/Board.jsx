@@ -14,6 +14,7 @@ import { DragDropContext } from "@hello-pangea/dnd";
 
 
 const Board = () => {
+  // dữ liệu mẫu
   const defaultData = {
     tasks: {
       "task-1": {
@@ -143,7 +144,7 @@ const Board = () => {
   };
   const handleAddTask = (newTask, columnId) => {
     addTask(newTask, columnId);
-    setAddingTask(null);
+    setAddingTask(null);    
     setKeyWord("");
     setPriority("");
     toast.success("Đã thêm thẻ mới");
@@ -187,8 +188,6 @@ const Board = () => {
   // xóa column
   const handleDeleteColumn = (columnId) => {
     deleteColumn(columnId);
-    setKeyWord("");
-    setPriority("");
     toast.success("Đã xóa danh sách");
   };
 
@@ -348,6 +347,7 @@ const Board = () => {
       }}
     >
       <BoardBar
+        key={`${keyWord}-${priority}`}
         onSearch={(keyWord) => setKeyWord(keyWord)}
         onFilter={(priority) => setPriority(priority)}
         currentKey={keyWord}

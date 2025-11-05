@@ -2,15 +2,10 @@ import { useEffect, useState } from "react";
 import ToggleTheme from "./ToggleTheme";
 import { X, Search } from "lucide-react";
 
-const BoardBar = ({ onSearch, onFilter, currentKey, currentPriority}) => {
-  const [priority, setPriority] = useState(currentKey);
-  const [keyWord, setKeyWord] = useState(currentPriority);
+const BoardBar = ({ onSearch, onFilter, currentKey, currentPriority }) => {
+  const [priority, setPriority] = useState(currentPriority);
+  const [keyWord, setKeyWord] = useState(currentKey);
   const [activeBtn, setActiveBtn] = useState(true);
-
-  useEffect(()=>{
-    setKeyWord(currentKey)
-    setPriority(currentPriority)
-  },[currentKey, currentPriority])
 
   useEffect(() => {
     if (keyWord.trim()) {
@@ -22,12 +17,10 @@ const BoardBar = ({ onSearch, onFilter, currentKey, currentPriority}) => {
 
   const handleChangeKey = (keyWord) => {
     setKeyWord(keyWord);
-    if (!keyWord.trim()) onSearch("");
   };
 
   const handleSubmit = () => {
-    if (keyWord.trim()) 
-      onSearch(keyWord);
+    if (keyWord.trim()) onSearch(keyWord);
   };
 
   const handlePressKey = (e) => {
@@ -37,12 +30,13 @@ const BoardBar = ({ onSearch, onFilter, currentKey, currentPriority}) => {
   const handleClearSearch = () => {
     if (keyWord.trim()) setKeyWord("");
     onSearch("");
-  };
+  };  
 
   const handleChangeFilter = (e) => {
     setPriority(e.target.value);
     onFilter(e.target.value);
   };
+
 
   return (
     <>
@@ -81,7 +75,10 @@ const BoardBar = ({ onSearch, onFilter, currentKey, currentPriority}) => {
                 onClick={handleSubmit}
                 className="disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-transparent px-4 sm:px-3"
               >
-                <Search size={20} className="sm:w-6 sm:h-6 sm:hover:bg-gray-300" />
+                <Search
+                  size={20}
+                  className="sm:w-6 sm:h-6 sm:hover:bg-gray-300"
+                />
               </button>
             </div>
           </div>
