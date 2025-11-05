@@ -23,7 +23,7 @@ const Column = ({ column, columnTasks, dragHandleProps }) => {
   return (
       <div
         className="min-w-[250px]  max-w-[250px] sm:min-w-80 sm:max-w-80 bg-[rgb(163,233,204)] dark:bg-[rgba(19,51,59)]  
-        border border-black dark:border-white shadow-[0_5px_10px_rgba(0,0,0,0.35)] rounded-lg overflow-hidden mr-12"
+        border border-black dark:border-white shadow-[0_5px_10px_rgba(0,0,0,0.35)] rounded-lg overflow-hidden mr-12 t"
       >
       <div
         {...dragHandleProps}
@@ -45,7 +45,7 @@ const Column = ({ column, columnTasks, dragHandleProps }) => {
           <div
             ref={provided.innerRef}
             {...provided.droppableProps}
-            className="max-h-[calc(100vh-22rem)] overflow-y-auto  px-3 pb-3"
+            className="max-h-[calc(100vh-22rem)] overflow-y-auto  px-3 pb-3 h-sm:min-h-[300px]"
           >
             {columnTasks.map((task, index) => (
               <Draggable key={task.id} draggableId={task.id} index={index}>

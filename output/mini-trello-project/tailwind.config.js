@@ -5,6 +5,9 @@ export default {
   darkMode: "class",
   theme: {
     extend: {
+        screens: {
+        'h-sm': { 'raw': '(max-height: 600px)' },
+      },
       keyframes: {
         fadeIn: {
           "0%": { opacity: "0", transform: "scale(0.95)" },
