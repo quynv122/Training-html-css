@@ -38,8 +38,9 @@ const AddColumn = () => {
         onClick={() => {
           setIsAdding(true);
         }}
-        className="bg-[rgb(59,209,147)] hover:bg-[rgb(34,126,89)] dark:hover:bg-[rgb(2,119,72)] dark:bg-[rgb(19,70,49)] dark:border-white  text-black dark:text-white 
-        rounded-lg p-2 w-80 flex-shrink-0 transition-all flex items-center justify-center gap-2 border border-black h-fit"
+        className="bg-[rgb(59,209,147)] hover:bg-[rgb(34,126,89)] dark:hover:bg-[rgb(2,119,72)] dark:bg-[rgb(19,70,49)] dark:border-white 
+         text-black dark:text-white  min-w-60 max-w-60 sm:min-w-80 sm:max-w-80 shadow-[0_5px_10px_rgba(0,0,0,0.35)]
+        rounded-lg p-2flex-shrink-0 transition-all flex items-center justify-center gap-2 border border-black h-fit py-3"
       >
         <Plus size={20} />
         <span className="font-medium">Thêm cột mới</span>
@@ -50,7 +51,7 @@ const AddColumn = () => {
   return (
     <div
       className="bg-[rgb(59,209,147)] dark:bg-[rgb(19,70,49)] border border-black
-    rounded-xl p-4 w-80 flex-shrink-0 h-fit text-black dark:text-white"
+    rounded-xl p-4 w-80 flex-shrink-0 h-fit text-black dark:text-white shadow-[0_5px_10px_rgba(0,0,0,0.35)]"
     >
       <label className=" mb-2 block text-lg font-medium">Tên cột</label>
       <input

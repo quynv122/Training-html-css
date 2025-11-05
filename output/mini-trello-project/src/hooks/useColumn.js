@@ -5,7 +5,7 @@ export const useColumn = (setBoardData) => {
   // thêm column mới
   const addColumn = useCallback(
     (columnTitle) => {
-      const columnId = crypto.randomUUID();
+      const columnId = `Column-${Date.now()}`;
       setBoardData((prev) => ({
         ...prev,
         columns: {

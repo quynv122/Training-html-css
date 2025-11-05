@@ -62,7 +62,7 @@ function ModalEditColumn({ isOpen, column, rect }) {
         ref={modalRef}
         className="fixed z-50 animate-fadeIn text-black dark:text-white
         will-change-transform bg-[rgb(146,221,255)]  dark:bg-[rgb(11,74,48)]
-          rounded-lg shadow-2xl w-[300px] h-[250] overflow-hidden"
+          rounded-lg w-[300px] h-[250] overflow-hidden shadow-[0_5px_10px_rgba(0,0,0,0.35)]"
         style={{
           top: `${position.top + 20}px`,
           left: `${position.left}px`,

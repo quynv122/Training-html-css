@@ -30,7 +30,7 @@ const ModalAddTask = ({ isOpen, columnId, rect }) => {
         title: title,
         description: description,
         priority: priority,
-        id: crypto.randomUUID(),
+        id: `Task-${Date.now()}`,
         createdAt: getLocalISOTime(),
       };
       handleAddTask(newCard, columnId);
@@ -64,7 +64,7 @@ const ModalAddTask = ({ isOpen, columnId, rect }) => {
     <div
       ref={modalRef}
       className="bg-[rgb(146,221,255)] dark:bg-[rgb(3,55,80)] border border-black text-black dark:text-white fixed z-50 w-[300px] h-[250px] animate-fadeIn
-        will-change-transform p-4 rounded-lg shadow-sm"
+        will-change-transform p-4 rounded-lg shadow-[0_5px_10px_rgba(0,0,0,0.35)]"
       style={{
         top: `${position.top + 10}px`,
         left: `${position.left + 10}px`,
