@@ -55,9 +55,8 @@ const handleApply = () => emit("handleApplyFilter", inputKey.value, inputPriorit
 </script>
 <template>
   <div class="fixed inset-0 z-50">
-
     <div class="absolute inset-0 bg-app-overlay backdrop-blur-[1px]" @click="handleClose"></div>
-    <div class="absolute flex flex-col rounded-2xl bg-app-bg-modal shadow-xl
+    <div class="absolute flex flex-col  shadow-[0_18px_40px_rgba(15,23,42,0.18)] rounded-2xl bg-app-bg-modal 
              border border-app-border-column overflow-hidden text-app-text-main" :style="modalStyles" role="dialog"
       aria-modal="true">
       <div class="flex items-start gap-3 px-4 py-3
@@ -106,9 +105,8 @@ const handleApply = () => emit("handleApplyFilter", inputKey.value, inputPriorit
       <div class="flex gap-3 px-4 py-3 border-t border-app-border-column
                bg-app-brand-soft/60">
         <button @click="handleReset" class="flex-1 px-4 py-2 text-xs sm:text-sm font-medium
-                 rounded-xl border border-app-border-task
-                 text-app-text-main
-                 hover:bg-app-bg-board transition-colors">
+                 rounded-xl bg-app-brand-soft text-app-text-main border border-dashed border-app-border-column
+                hover:bg-app-brand-strong hover:text-white">
           Đặt lại
         </button>
         <button @click="handleApply" class="flex-1 px-4 py-2 text-xs sm:text-sm font-medium
@@ -120,15 +118,3 @@ const handleApply = () => emit("handleApplyFilter", inputKey.value, inputPriorit
     </div>
   </div>
 </template>
-
-<style scoped>
-.filter-modal-enter-active,
-.filter-modal-leave-active {
-  transition: opacity 0.16s ease-out;
-}
-
-.filter-modal-enter-from,
-.filter-modal-leave-to {
-  opacity: 0;
-}
-</style>

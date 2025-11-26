@@ -6,10 +6,8 @@ import CustomToast from './utils/CustomToast.vue';
 </script>
 
 <template>
-  <CustomToast/>
-    <MainLayout>
-      <Board> </Board>
-    </MainLayout>
-
-
+  <CustomToast />
+  <MainLayout>
+    <Board> </Board>
+  </MainLayout>
 </template>

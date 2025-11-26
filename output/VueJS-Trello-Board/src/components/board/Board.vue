@@ -1,18 +1,21 @@
 <script setup lang="js">
 import { useLocalStorage } from '../../composables/useLocalStorage';
-import { computed, ref } from 'vue'
+import { computed, ref, Transition } from 'vue'
 import Column from '../column/Column.vue';
 import Task from '../task/Task.vue';
-import AddColumn from '../ui/AddColumn.vue';
+import AddColumn from '../column/AddColumn.vue';
 import ModalEditColumn from '../column/ModalEditColumn.vue'
-import AddTask from '../ui/AddTask.vue';
+import AddTask from '../task/AddTask.vue';
 import ModalFilter from '../ui/ModalFilter.vue';
 import BoardBar from '../ui/BoardBar.vue';
 import { getLocalISOTime } from '../../utils/date';
 import ModalEditTask from '../task/ModalEditTask.vue';
 import { toast } from 'vue3-toastify';
 import draggable from "vuedraggable";
+import FadeAnimation from '../transitions/FadeAnimation.vue';
 
+
+// dữ liệu mẫu
 const boardDataTemplate = {
   columns: {
     "col-1235525234": {
@@ -122,8 +125,10 @@ const boardDataTemplate = {
   ],
 };
 
+// load / save dữ liệu từ localstorage
+const boardData = useLocalStorage('boardData', boardDataTemplate)
 
-
+// các biến lưu trữ trạng thái
 const searchKeyword = ref('')
 const filterPriority = ref('')
 const showFilterModal = ref(false)
@@ -133,16 +138,12 @@ const modalPosition = ref(null)
 const selectTask = ref(null);
 const selectTaskInColumnId = ref(null)
 
-const boardData = useLocalStorage('boardData', )
-
 // lọc dữ liệu
 const filteredBoard = computed(() => {
   const key = searchKeyword.value.trim().toLowerCase();
   const pri = filterPriority.value.trim().toLowerCase();
   if (!key && !pri) return boardData.value;
-
   const bd = boardData.value;
-
   const newBoard = {
     columnOrder: [...bd.columnOrder],
     columns: {}
@@ -150,25 +151,20 @@ const filteredBoard = computed(() => {
 
   for (const colId of bd.columnOrder) {
     const col = bd.columns[colId];
-
     const filteredTasks = col.tasks.filter((task) => {
       const matchTitle = key
         ? task.title.toLowerCase().includes(key)
         : true;
-
       const matchPriority = pri
         ? task.priority.toLowerCase() === pri
         : true;
-
       return matchTitle && matchPriority;
     });
-
     newBoard.columns[colId] = {
       ...col,
       tasks: filteredTasks
     };
   }
-
   return newBoard;
 });
 
@@ -199,10 +195,7 @@ const handleApplyFilter = (inputKey, inputPriority) => {
     isFilter.value = true;
     closeFilterModal()
   } else {
-    searchKeyword.value = ''
-    filterPriority.value = ''
-    isFilter.value = true;
-    closeFilterModal()
+    handleResetFilter()
   }
 }
 const closeFilterModal = () => {
@@ -413,100 +406,121 @@ const onTaskDragEnd = (evt) => {
 
     }
   }
-
 }
 </script>
 
 <template>
-  <BoardBar :isFilter="isFilter" @openFilterModal="openFilterModal" :showFilterModal="showFilterModal" />
-  <div class="flex gap-6 h-[calc(100vh-120px)] overflow-x-auto px-8 overflow-y-hidden py-4">
-    <draggable v-model="boardData.columnOrder" handle=".column-drag-area" group="columns" :item-key="(colId) => colId"
-      direction="horizontal" :animation="200" :easing="'cubic-bezier(0.22, 1, 0.36, 1)'" ghost-class="column-ghost"
-      chosen-class="column-chosen" drag-class="column-dragging" :swap-threshold="0.3" filter=".no-drag"
-      :prevent-on-filter="false" class="flex gap-6">
-      <template #item="{ element: colId }">
-        <Column :column="filteredBoard.columns[colId]" :selectColumnId="selectColumn?.id"
-          @openEditColumnModal="openEditColumnModal">
-          <draggable :model-value="filteredBoard.columns[colId].tasks" group="tasks" item-key="id" :data-column="colId"
-            :animation="180" :easing="'cubic-bezier(0.22, 1, 0.36, 1)'" ghost-class="task-ghost"
-            chosen-class="task-chosen" drag-class="task-dragging" item-class="task-wrapper"
-            class="flex flex-col gap-3 max-h-[calc(100vh-400px)] overflow-y-auto overflow-x-hidden px-4 pt-2 custom-scrollbar"
-            @end="onTaskDragEnd">
-            <template #item="{ element }">
-              <Task :task="element" :columnId="colId" :editingTaskId="selectTask?.id"
-                @openEditTaskModal="openEditTaskModal" />
-            </template>
-          </draggable>
-          <div class="px-4">
-            <AddTask :columnId="colId" @handleAddTask="handleAddTask" />
-          </div>
-        </Column>
-      </template>
-    </draggable>
-    <AddColumn @handleAddColumn="handleAddColumn" />
+  <BoardBar :isFilter="isFilter" :showFilterModal="showFilterModal" @openFilterModal="openFilterModal" />
+  <div class="board-wrapper">
+    <div class="board-scroll flex items-start gap-4 sm:gap-6 h-[calc(100vh-140px)] px-3 sm:px-4 lg:px-8 py-3 sm:py-4">
+      <draggable v-model="boardData.columnOrder" handle=".column-drag-area" group="columns" :item-key="(colId) => colId"
+        direction="horizontal" :animation="200" :easing="'cubic-bezier(0.22, 1, 0.36, 1)'" ghost-class="column-ghost"
+        chosen-class="column-chosen" drag-class="column-dragging" :swap-threshold="0.3" filter=".no-drag"
+        :prevent-on-filter="false" class="flex items-start gap-4 sm:gap-6">
+        <template #item="{ element: colId }">
+          <Column :column="filteredBoard.columns[colId]" :selectColumnId="selectColumn?.id"
+            @openEditColumnModal="openEditColumnModal">
+            <div class="column-scroll-mask">
+              <draggable :model-value="filteredBoard.columns[colId].tasks" group="tasks" item-key="id" filter=".no-drag"
+                :prevent-on-filter="false" :data-column="colId" :animation="180"
+                :easing="'cubic-bezier(0.22, 1, 0.36, 1)'" ghost-class="task-ghost" chosen-class="task-chosen"
+                drag-class="task-dragging" item-class="task-wrapper"
+                class="column-scroll-inner flex flex-col gap-3 py-2 px-3 sm:px-4" @end="onTaskDragEnd">
+                <template #item="{ element }">
+                  <Task :task="element" :columnId="colId" :editingTaskId="selectTask?.id"
+                    @openEditTaskModal="openEditTaskModal" />
+                </template>
+              </draggable>
+            </div>
+            <div class="px-3 sm:px-4 py-2">
+              <AddTask :columnId="colId" @handleAddTask="handleAddTask" />
+            </div>
+          </Column>
+        </template>
+      </draggable>
+      <div class="shrink-0 w-[260px] sm:w-[280px]">
+        <AddColumn @handleAddColumn="handleAddColumn" />
+      </div>
+    </div>
   </div>
-  <Transition name="column-modal">
+  <FadeAnimation>
     <ModalEditColumn v-if="selectColumn && modalPosition" :selectColumn="selectColumn" :modalPosition="modalPosition"
       @closeEditColumnModal="closeEditColumnModal" @handleDeleteColumn="handleDeleteColumn"
       @handleEditColumn="handleEditColumn" />
-  </Transition>
+  </FadeAnimation>
 
-  <ModalEditTask v-if="selectTask && selectTaskInColumnId && modalPosition" :selectTaskInColumnId="selectTaskInColumnId"
-    :selectTask="selectTask" :modalPosition="modalPosition" @closeEditTaskModal="closeEditTaskModal"
-    @handleDeleteTask="handleDeleteTask" @handleEditTask="handleEditTask" />
+  <FadeAnimation>
+    <ModalEditTask v-if="selectTask && selectTaskInColumnId && modalPosition"
+      :selectTaskInColumnId="selectTaskInColumnId" :selectTask="selectTask" :modalPosition="modalPosition"
+      @closeEditTaskModal="closeEditTaskModal" @handleDeleteTask="handleDeleteTask" @handleEditTask="handleEditTask" />
+  </FadeAnimation>
 
-  <Transition name="filter-modal">
+  <FadeAnimation>
     <ModalFilter v-if="showFilterModal && modalPosition" :modalPosition="modalPosition" :keyWord="searchKeyword"
       :priority="filterPriority" @handleApplyFilter="handleApplyFilter" @handleResetFilter="handleResetFilter"
       @closeFilterModal="closeFilterModal" />
-  </Transition>
-
+  </FadeAnimation>
 </template>
+
 <style scoped>
-.custom-scrollbar::-webkit-scrollbar {
-  width: 8px;
+.board-wrapper {
+  background: radial-gradient(circle at top left,
+      rgba(253, 230, 138, 0.45),
+      transparent 55%),
+    radial-gradient(circle at bottom right,
+      rgba(129, 140, 248, 0.35),
+      transparent 55%);
+}
+.board-scroll {
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
 }
 
-.custom-scrollbar::-webkit-scrollbar-thumb {
-  background: #79aafc;
-  border-radius: 6px;
+.board-scroll::-webkit-scrollbar {
+  height: 8px;
 }
 
+.board-scroll::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.8);
+  border-radius: 999px;
+}
 
-/* Bóng còn lại trong list khi đang kéo */
+.column-scroll-mask {
+  overflow: hidden;
+}
+
+.column-scroll-inner {
+  max-height: calc(100vh - 360px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+
 .column-ghost {
   opacity: 0.6;
   transition: transform 0.15s ease, opacity 0.15s ease;
 }
 
-/* Cột đang được kéo */
 .column-chosen {
   z-index: 20;
 }
 
-/* Cursor khi đang kéo */
 .column-dragging {
   cursor: grabbing !important;
 }
 
-/* ========== TASK DND ========== */
-
-/* thằng bọc ngoài mỗi task */
 .task-wrapper {
   transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
 }
 
-/* bóng còn lại trong list khi kéo – chỉ mờ nhẹ thôi */
 .task-ghost {
   opacity: 0.85;
-  /* trước là 0.4, giờ cho rõ lên */
   transform: scale(0.99);
 }
 
-/* task đang bị kéo – nhìn rõ 100% */
 .task-chosen {
   opacity: 0.8;
-  /* đảm bảo không bị mờ */
   transform: scale(1.02) translateY(-1px);
   box-shadow: 0 12px 30px rgba(15, 23, 42, 0.25);
   z-index: 20;
@@ -514,5 +528,23 @@ const onTaskDragEnd = (evt) => {
 
 .task-dragging {
   cursor: grabbing !important;
+}
+
+@media (min-width: 640px) {
+  .column-scroll-inner::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .column-scroll-inner::-webkit-scrollbar-thumb {
+    background: #79aafc;
+    border-radius: 6px;
+  }
+}
+
+@media (max-width: 639px) {
+  .column-scroll-inner {
+    padding-right: 10px;
+    margin-right: -10px;
+  }
 }
 </style>

@@ -1,26 +1,14 @@
-
-
-
-/* ============================= */
-/* RESET CSS CƠ BẢN & HIỆN ĐẠI  */
-/* ============================= */
-
-
-
 *,
 *::before,
 *::after {
   box-sizing: border-box;
-  
 }
 
-/* Bỏ underline mặc định */
 a {
   text-decoration: none;
   color: inherit;
 }
 
-/* Hiển thị ảnh đúng kích thước */
 img,
 picture,
 video,
@@ -30,175 +18,124 @@ svg {
   max-width: 100%;
 }
 
-/* Font thừa kế */
 input,
 button,
 textarea,
 select {
   font: inherit;
-
 }
 
-
-
-/* Anti scroll jump */
 html {
   scroll-behavior: smooth;
 }
 
-/* Body base */
 body {
   min-height: 100vh;
   text-rendering: optimizeLegibility;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-    Roboto, Helvetica, Arial, sans-serif;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Helvetica, Arial, sans-serif;
   background: #fff;
   color: #111;
-
 }
 
-/* Button clickable */
 button {
   cursor: pointer;
 }
 
-/* Table reset */
 table {
   border-collapse: collapse;
   width: 100%;
 }
 
-
-
-/* TAILWIND IMPORT */
 @import "tailwindcss";
 
-/* ========== 1. KHAI BÁO TOKEN CHO TAILWIND ========== */
-
 @theme {
-  /* Nền / layout */
-  --color-app-bg-body: var(--app-bg-body);           /* body */
-  --color-app-bg-board: var(--app-bg-board);         /* vùng board + scroll */
-  --color-app-bg-boardbar: var(--app-bg-boardbar);   /* thanh BoardBar trên cùng */
+  --color-app-bg-body: var(--app-bg-body);
+  --color-app-bg-board: var(--app-bg-board);
+  --color-app-bg-boardbar: var(--app-bg-boardbar);
   --color-app-bg-column-header: var(--app-bg-column-header);
   --color-app-bg-column-body: var(--app-bg-column-body);
-  --color-app-bg-task: var(--app-bg-task);           /* card task */
+  --color-app-bg-task: var(--app-bg-task);
   --color-app-bg-task-hover: var(--app-bg-task-hover);
-
-  /* Modal / overlay */
   --color-app-bg-modal: var(--app-bg-modal);
   --color-app-bg-modal-side: var(--app-bg-modal-side);
   --color-app-overlay: var(--app-overlay);
-
-  /* Chữ */
   --color-app-text-main: var(--app-text-main);
   --color-app-text-sub: var(--app-text-sub);
   --color-app-text-muted: var(--app-text-muted);
   --color-app-text-on-amber: var(--app-text-on-amber);
-
-  /* Viền */
   --color-app-border-board: var(--app-border-board);
   --color-app-border-column: var(--app-border-column);
   --color-app-border-task: var(--app-border-task);
   --color-app-border-muted: var(--app-border-muted);
-
-  /* Brand / trạng thái */
-  --color-app-brand: var(--app-brand);               /* nút chính (Lưu, Add, v.v.) */
-  --color-app-brand-soft: var(--app-brand-soft);     /* nền dịu, hover */
-  --color-app-brand-strong: var(--app-brand-strong); /* nổi bật hơn */
-  --color-app-accent: var(--app-accent);             /* accent phụ (ví dụ Filter đang bật) */
-  --color-app-danger: var(--app-danger);             /* Xóa, cảnh báo */
-
-  /* Priority badge */
+  --color-app-brand: var(--app-brand);
+  --color-app-brand-soft: var(--app-brand-soft);
+  --color-app-brand-strong: var(--app-brand-strong);
+  --color-app-accent: var(--app-accent);
+  --color-app-danger: var(--app-danger);
   --color-app-priority-high: var(--app-priority-high);
   --color-app-priority-medium: var(--app-priority-medium);
   --color-app-priority-low: var(--app-priority-low);
 }
 
-/* ========== 2. GÁN MÀU CHO LIGHT / DARK ========== */
 @layer base {
-  /* === LIGHT MODE === */
   :root {
-    /* Layout */
-    --app-bg-body: #fefce8;            /* Amber-50 */
-    --app-bg-board: #fffbeb;           /* Amber-50 hơi ấm */
-    --app-bg-boardbar: #fef08a;        /* Amber-200 */
-    --app-bg-column-header: #fde047;   /* Amber-300 */
-    --app-bg-column-body: #fed7aa;     /* Orange-200 nhẹ cho phần body */
-    --app-bg-task: #ffffff;            /* Trắng, card nổi trên nền vàng */
-    --app-bg-task-hover: #d3d3d3;      /* Amber-100 */
-
-    /* Modal */
-    --app-bg-modal: #ffffff;           /* modal chính trắng */
-    --app-bg-modal-side: #fffbeb;      /* cột nút bên phải modal */
-    --app-overlay: rgba(15, 23, 42, 0.35); /* overlay hơi tối một xíu */
-
-    /* Text */
-    --app-text-main: #0f172a;          /* Slate-900 */
-    --app-text-sub: #475569;           /* Slate-600 */
-    --app-text-muted: #9ca3af;         /* Gray-400 */
-    --app-text-on-amber: #78350f;      /* Brown trên nền vàng */
-
-    /* Border */
-    --app-border-board: #fcd34d;       /* Amber-300 */
-    --app-border-column: #fbbf24;      /* Amber-400 */
-    --app-border-task: #e2e8f0;        /* Slate-200 */
-    --app-border-muted: #e5e7eb;       /* Gray-200 */
-
-    /* Brand */
-    --app-brand: #f59e0b;              /* Amber-500 */
-    --app-brand-soft: #fef3c7;         /* Amber-100 */
-    --app-brand-strong: #d97706;       /* Amber-600 */
-    --app-accent: #4f46e5;             /* Indigo-600 – dùng cho filter active, v.v. */
-    --app-danger: #ef4444;             /* Red-500 */
-
-    /* Priority */
-    --app-priority-high: #b91c1c;      /* Red-700 */
-    --app-priority-medium: #b45309;    /* Amber-700 */
-    --app-priority-low: #15803d;       /* Green-700 */
+    --app-bg-body: #fefce8;
+    --app-bg-board: #fffbeb;
+    --app-bg-boardbar: #fef08a;
+    --app-bg-column-header: #fde047;
+    --app-bg-column-body: #fed7aa;
+    --app-bg-task: #ffffff;
+    --app-bg-task-hover: #d3d3d3;
+    --app-bg-modal: #ffffff;
+    --app-bg-modal-side: #fffbeb;
+    --app-overlay: rgba(15, 23, 42, 0.35);
+    --app-text-main: #0f172a;
+    --app-text-sub: #475569;
+    --app-text-muted: #9ca3af;
+    --app-text-on-amber: #78350f;
+    --app-border-board: #fcd34d;
+    --app-border-column: #fbbf24;
+    --app-border-task: #e2e8f0;
+    --app-border-muted: #e5e7eb;
+    --app-brand: #f59e0b;
+    --app-brand-soft: #ffffff;
+    --app-brand-strong: #d97706;
+    --app-accent: #0099ff;
+    --app-danger: #cc0303;
+    --app-priority-high: #b91c1c;
+    --app-priority-medium: #b45309;
+    --app-priority-low: #15803d;
   }
 
-  /* === DARK MODE === */
   :root.dark {
-    /* Layout */
-    --app-bg-body: #020617;            /* Slate-950 */
-    --app-bg-board: #020617;           /* full dark */
-    --app-bg-boardbar: #0f172a;        /* Slate-900 */
-    --app-bg-column-header: #f59e0b;   /* Amber-500 header nổi trên nền tối */
-    --app-bg-column-body: #1e293b;     /* Slate-800 */
-    --app-bg-task: #0b1120;            /* Slate-950, card hơi nổi */
-    --app-bg-task-hover: #636569;      /* Slate-900 */
-
-    /* Modal */
-    --app-bg-modal: #0f172a;           /* Slate-900 */
-    --app-bg-modal-side: #020617;      /* darker side */
+    --app-bg-body: #020617;
+    --app-bg-board: #020617;
+    --app-bg-boardbar: #0f172a;
+    --app-bg-column-header: #f59e0b;
+    --app-bg-column-body: #1e293b;
+    --app-bg-task: #0b1120;
+    --app-bg-task-hover: #636569;
+    --app-bg-modal: #0f172a;
+    --app-bg-modal-side: #020617;
     --app-overlay: rgba(15, 23, 42, 0.7);
-
-    /* Text */
-    --app-text-main: #f9fafb;          /* Gray-50 */
-    --app-text-sub: #e5e7eb;           /* Gray-200 */
-    --app-text-muted: #9ca3af;         /* Gray-400 */
-    --app-text-on-amber: #ffffff;      /* gần black */
-
-    /* Border */
-    --app-border-board: #334155;       /* Slate-700 */
-    --app-border-column: #f59e0b;      /* Amber-500 viền nhẹ */
-    --app-border-task: #1f2937;        /* Gray-800 */
-    --app-border-muted: #4b5563;       /* Gray-700 */
-
-    /* Brand */
-    --app-brand: #fbbf24;              /* Amber-400 */
-    --app-brand-soft: #7c6356;         /* Amber-950 */
-    --app-brand-strong: #f59e0b;       /* Amber-500 */
-    --app-accent: #818cf8;             /* Indigo-400 */
-    --app-danger: #f97373;             /* Red-400 */
-
-    /* Priority */
-    --app-priority-high: #fecaca;      /* Red-200 */
-    --app-priority-medium: #fed7aa;    /* Orange-200 */
-    --app-priority-low: #bbf7d0;       /* Green-200 */
+    --app-text-main: #f9fafb;
+    --app-text-sub: #e5e7eb;
+    --app-text-muted: #9ca3af;
+    --app-text-on-amber: #ffffff;
+    --app-border-board: #334155;
+    --app-border-column: #f59e0b;
+    --app-border-task: #1f2937;
+    --app-border-muted: #4b5563;
+    --app-brand: #fbbf24;
+    --app-brand-soft: #7c6356;
+    --app-brand-strong: #f59e0b;
+    --app-accent: #818cf8;
+    --app-danger: #cc0000;
+    --app-priority-high: #fecaca;
+    --app-priority-medium: #fed7aa;
+    --app-priority-low: #bbf7d0;
   }
-
 
   body {
     background-color: var(--app-bg-body);

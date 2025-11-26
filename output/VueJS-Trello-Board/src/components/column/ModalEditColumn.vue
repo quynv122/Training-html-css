@@ -62,22 +62,15 @@ const handleDelete = () => emit("handleDeleteColumn", props.selectColumn.id)
 <template>
   <div class="fixed inset-0 z-50">
     <div class="absolute inset-0 bg-app-overlay" @click="handleClose"></div>
-    <div class="absolute z-50 flex flex-col rounded-2xl
-             bg-app-bg-modal shadow-xl
-             border border-app-border-column overflow-hidden
-             text-app-text-main" :style="modalStyles" role="dialog" aria-modal="true">
-      <div class="flex items-center justify-between gap-3
-               px-4 py-3
-               border-b border-app-border-column
-               bg-app-brand-soft">
-        <h3 class="text-sm font-semibold">
-          Chỉnh sửa cột
-        </h3>
-
-        <button type="button" class="no-drag inline-flex h-7 w-7 items-center justify-center
-                 rounded-full text-app-text-sub
-                 hover:bg-app-bg-board hover:text-app-text-main
-                 transition-colors" @click.stop="handleClose">
+    <div
+      class="absolute z-50 flex flex-col rounded-2xl  shadow-[0_18px_40px_rgba(15,23,42,0.18)] bg-app-bg-modal  border border-app-border-column overflow-hidden text-app-text-main"
+      :style="modalStyles" role="dialog" aria-modal="true">
+      <div
+        class="flex items-center justify-between gap-3 px-4 py-3 border-b border-app-border-column bg-app-brand-soft">
+        <h3 class="text-sm font-semibold">Chỉnh sửa cột</h3>
+        <button type="button"
+          class="no-drag inline-flex h-7 w-7 items-center justify-center rounded-full text-app-text-sub hover:bg-app-bg-board hover:text-app-text-main transition-colors"
+          @click.stop="handleClose">
           <X class="w-4 h-4" />
         </button>
       </div>
@@ -86,33 +79,21 @@ const handleDelete = () => emit("handleDeleteColumn", props.selectColumn.id)
           <label class="block text-xs font-medium text-app-text-sub mb-1.5">
             Tên cột
           </label>
-          <input v-model="inputName" type="text" placeholder="Nhập tên cột" class="w-full px-3 py-2 text-sm rounded-xl
-                   border border-app-border-column
-                   bg-app-bg-task
-                   text-app-text-main
-                   placeholder:text-app-text-muted
-                   focus:outline-none focus:ring-2
-                   focus:ring-app-brand focus:border-app-brand
-                   transition-shadow" />
+          <input v-model="inputName" type="text" placeholder="Nhập tên cột"
+            class="w-full px-3 py-2 text-sm rounded-xl border border-app-border-column bg-app-bg-task text-app-text-main placeholder:text-app-text-muted focus:outline-none focus:ring-2 focus:ring-app-brand focus:border-app-brand transition-shadow" />
         </div>
-
         <ul class="space-y-1.5 text-sm">
           <li>
-            <button type="button" class="w-full flex items-center gap-2 px-3 py-2 rounded-xl
-                     bg-transparent text-app-text-main
-                     hover:bg-app-brand-soft
-                     active:bg-app-brand-strong/10
-                     transition-colors">
+            <button type="button"
+              class="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-app-text-main bg-app-brand-soft hover:bg-app-brand-strong transition-colors">
               <Copy class="w-4 h-4" />
               <span>Nhân đôi cột</span>
             </button>
           </li>
-
           <li>
-            <button type="button" class="w-full flex items-center gap-2 px-3 py-2 rounded-xl
-                     bg-app-danger/5 text-app-danger
-                     hover:bg-app-danger/10 active:bg-app-danger/15
-                     transition-colors" @click="handleDelete">
+            <button type="button"
+              class="w-full flex items-center gap-2 px-3 py-2 rounded-xl bg-app-danger text-white hover:bg-app-danger/60 transition-colors"
+              @click="handleDelete">
               <Trash2 class="w-4 h-4" />
               <span>Xóa danh sách</span>
             </button>
@@ -122,15 +103,3 @@ const handleDelete = () => emit("handleDeleteColumn", props.selectColumn.id)
     </div>
   </div>
 </template>
-
-<style scoped>
-.column-modal-enter-active,
-.column-modal-leave-active {
-  transition: opacity 0.16s ease-out;
-}
-
-.column-modal-enter-from,
-.column-modal-leave-to {
-  opacity: 0;
-}
-</style>
